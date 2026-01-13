@@ -1,0 +1,115 @@
+aloitustilanne:
+mysql> select * FROM pet;
++----------+--------+---------+------+------------+------------+
+| name     | owner  | species | sex  | birth      | death      |
++----------+--------+---------+------+------------+------------+
+| Fluffy   | Harold | cat     | f    | 1993-02-04 | NULL       |
+| Claws    | Gwen   | cat     | m    | 1994-03-17 | NULL       |
+| Buffy    | Harold | dog     | f    | 1989-05-13 | NULL       |
+| Fang     | Benny  | dog     | m    | 1990-08-27 | NULL       |
+| Bowser   | Diane  | dog     | m    | 1979-08-31 | 1995-07-29 |
+| Chirpy   | Gwen   | bird    | f    | 1998-09-11 | NULL       |
+| Whistler | Gwen   | bird    | NULL | 1997-12-09 | NULL       |
+| Slim     | Benny  | snake   | m    | 1996-04-29 | NULL       |
+| Puffball | Diane  | hamster | f    | 1999-03-30 | NULL       |
++----------+--------+---------+------+------------+------------+
+______________________________________________________________________
+a)
+mysql> DELETE FROM pet where name = 'Puffball';
+Query OK, 1 row affected (0.37 sec)
+
+mysql> select * FROM pet
+    -> ;
++----------+--------+---------+------+------------+------------+
+| name     | owner  | species | sex  | birth      | death      |
++----------+--------+---------+------+------------+------------+
+| Fluffy   | Harold | cat     | f    | 1993-02-04 | NULL       |
+| Claws    | Gwen   | cat     | m    | 1994-03-17 | NULL       |
+| Buffy    | Harold | dog     | f    | 1989-05-13 | NULL       |
+| Fang     | Benny  | dog     | m    | 1990-08-27 | NULL       |
+| Bowser   | Diane  | dog     | m    | 1979-08-31 | 1995-07-29 |
+| Chirpy   | Gwen   | bird    | f    | 1998-09-11 | NULL       |
+| Whistler | Gwen   | bird    | NULL | 1997-12-09 | NULL       |
+| Slim     | Benny  | snake   | m    | 1996-04-29 | NULL       |
++----------+--------+---------+------+------------+------------+
+______________________________________________________________________
+
+b)
+mysql> UPDATE pet SET birth ='1998-08-31' WHERE name = 'Bowser';
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * FROM pet;
++----------+--------+---------+------+------------+------------+
+| name     | owner  | species | sex  | birth      | death      |
++----------+--------+---------+------+------------+------------+
+| Fluffy   | Harold | cat     | f    | 1993-02-04 | NULL       |
+| Claws    | Gwen   | cat     | m    | 1994-03-17 | NULL       |
+| Buffy    | Harold | dog     | f    | 1989-05-13 | NULL       |
+| Fang     | Benny  | dog     | m    | 1990-08-27 | NULL       |
+| Bowser   | Diane  | dog     | m    | 1998-08-31 | 1995-07-29 |
+| Chirpy   | Gwen   | bird    | f    | 1998-09-11 | NULL       |
+| Whistler | Gwen   | bird    | NULL | 1997-12-09 | NULL       |
+| Slim     | Benny  | snake   | m    | 1996-04-29 | NULL       |
++----------+--------+---------+------+------------+------------+
+________________________________________________________________________
+c)
+mysql> UPDATE pet SET death ='2000-09-15' WHERE name = 'Chirpy';
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * FROM pet;
++----------+--------+---------+------+------------+------------+
+| name     | owner  | species | sex  | birth      | death      |
++----------+--------+---------+------+------------+------------+
+| Fluffy   | Harold | cat     | f    | 1993-02-04 | NULL       |
+| Claws    | Gwen   | cat     | m    | 1994-03-17 | NULL       |
+| Buffy    | Harold | dog     | f    | 1989-05-13 | NULL       |
+| Fang     | Benny  | dog     | m    | 1990-08-27 | NULL       |
+| Bowser   | Diane  | dog     | m    | 1998-08-31 | 1995-07-29 |
+| Chirpy   | Gwen   | bird    | f    | 1998-09-11 | 2000-09-15 |
+| Whistler | Gwen   | bird    | NULL | 1997-12-09 | NULL       |
+| Slim     | Benny  | snake   | m    | 1996-04-29 | NULL       |
++----------+--------+---------+------+------------+------------+
+______________________________________________________________________
+d)
+mysql> SELECT * FROM pet WHERE birth >= '1990-01-01' AND birth < '2000-01-01';
++----------+--------+---------+------+------------+------------+
+| name     | owner  | species | sex  | birth      | death      |
++----------+--------+---------+------+------------+------------+
+| Fluffy   | Harold | cat     | f    | 1993-02-04 | NULL       |
+| Claws    | Gwen   | cat     | m    | 1994-03-17 | NULL       |
+| Fang     | Benny  | dog     | m    | 1990-08-27 | NULL       |
+| Bowser   | Diane  | dog     | m    | 1998-08-31 | 1995-07-29 |
+| Chirpy   | Gwen   | bird    | f    | 1998-09-11 | 2000-09-15 |
+| Whistler | Gwen   | bird    | NULL | 1997-12-09 | NULL       |
+| Slim     | Benny  | snake   | m    | 1996-04-29 | NULL       |
++----------+--------+---------+------+------------+------------+
+______________________________________________________________________
+e)
+mysql> SELECT * FROM pet WHERE sex = 'm' AND species = 'dog';
++--------+-------+---------+------+------------+------------+
+| name   | owner | species | sex  | birth      | death      |
++--------+-------+---------+------+------------+------------+
+| Fang   | Benny | dog     | m    | 1990-08-27 | NULL       |
+| Bowser | Diane | dog     | m    | 1998-08-31 | 1995-07-29 |
++--------+-------+---------+------+------------+------------+
+______________________________________________________________________
+f)
+mysql> SELECT name FROM pet WHERE sex = 'm' AND species = 'dog';
++--------+
+| name   |
++--------+
+| Fang   |
+| Bowser |
++--------+
+______________________________________________________________________
+g)
+mysql> SELECT name, owner FROM pet WHERE sex = 'm' AND species = 'dog';
++--------+-------+
+| name   | owner |
++--------+-------+
+| Fang   | Benny |
+| Bowser | Diane |
++--------+-------+
+______________________________________________________________________
