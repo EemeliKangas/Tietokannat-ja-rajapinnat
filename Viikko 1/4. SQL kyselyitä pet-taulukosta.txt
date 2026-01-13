@@ -1,0 +1,65 @@
+a)
+mysql> SELECT DISTINCT owner FROM pet;
++--------+
+| owner  |
++--------+
+| Harold |
+| Gwen   |
+| Benny  |
+| Diane  |
++--------+
+_______________________________________________________
+b)
+mysql> SELECT name FROM pet ORDER BY name;
++----------+
+| name     |
++----------+
+| Bowser   |
+| Buffy    |
+| Chirpy   |
+| Claws    |
+| Fang     |
+| Fluffy   |
+| Slim     |
+| Whistler |
++----------+
+_______________________________________________________
+c)
+mysql> SELECT name FROM pet WHERE death IS NULL;
++----------+
+| name     |
++----------+
+| Fluffy   |
+| Claws    |
+| Buffy    |
+| Fang     |
+| Whistler |
+| Slim     |
++----------+
+_______________________________________________________
+d)
+mysql> SELECT DISTINCT owner FROM pet WHERE owner LIKE 'H%';
++--------+
+| owner  |
++--------+
+| Harold |
++--------+
+_______________________________________________________
+e)
+mysql> SELECT name FROM pet WHERE name LIKE '%ff%';
++--------+
+| name   |
++--------+
+| Fluffy |
+| Buffy  |
++--------+
+_______________________________________________________
+f)
+mysql> SELECT name FROM pet WHERE LENGTH(name) = 4;
++------+
+| name |
++------+
+| Fang |
+| Slim |
++------+
+_______________________________________________________
