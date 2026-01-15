@@ -69,4 +69,24 @@ mysql> select * from owner;
 | Diane      | Keaton    | Someaddress 4 |       4 |
 +------------+-----------+---------------+---------+
 
+Rakenteet descillä:
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| name    | varchar(20) | YES  |     | NULL    |                |
+| species | varchar(20) | YES  |     | NULL    |                |
+| sex     | char(1)     | YES  |     | NULL    |                |
+| birth   | date        | YES  |     | NULL    |                |
+| death   | date        | YES  |     | NULL    |                |
+| petID   | int         | NO   | PRI | NULL    | auto_increment |
+| ownerID | int         | YES  | MUL | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| first_name | varchar(255) | YES  |     | NULL    |                |
+| last_name  | varchar(255) | YES  |     | NULL    |                |
+| address    | varchar(255) | YES  |     | NULL    |                |
+| ownerID    | int          | NO   | PRI | NULL    | auto_increment |
++------------+--------------+------+-----+---------+----------------+
 (Siivottu välitarkistukset ja muut ylimääräiset)
