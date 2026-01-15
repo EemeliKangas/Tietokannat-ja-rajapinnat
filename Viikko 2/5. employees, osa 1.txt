@@ -1,0 +1,80 @@
+a)
+mysql> select * from departments ;
++---------+--------------------+
+| dept_no | dept_name          |
++---------+--------------------+
+| d009    | Customer Service   |
+| d005    | Development        |
+| d002    | Finance            |
+| d003    | Human Resources    |
+| d001    | Marketing          |
+| d004    | Production         |
+| d006    | Quality Management |
+| d008    | Research           |
+| d007    | Sales              |
++---------+--------------------+
+__________________________________________________
+b)
+mysql> select distinct title from titles ;
++--------------------+
+| title              |
++--------------------+
+| Senior Engineer    |
+| Staff              |
+| Engineer           |
+| Senior Staff       |
+| Assistant Engineer |
+| Technique Leader   |
+| Manager            |
++--------------------+
+__________________________________________________
+c)
+mysql> select MIN(salary) as min_salary, MAX(salary) as max_salary FROM salaries;
++------------+------------+
+| min_salary | max_salary |
++------------+------------+
+|      38623 |     158220 |
++------------+------------+
+__________________________________________________
+d)
+mysql> select AVG(salary) from salaries;
++-------------+
+| AVG(salary) |
++-------------+
+|  63810.7448 |
++-------------+
+__________________________________________________
+e)
+mysql> select * from employees where last_name = "Facello";
++--------+------------+-------------+-----------+--------+------------+
+| emp_no | birth_date | first_name  | last_name | gender | hire_date  |
++--------+------------+-------------+-----------+--------+------------+
+|  10001 | 1953-09-02 | Georgi      | Facello   | M      | 1986-06-26 |
+|  10327 | 1954-04-01 | Roded       | Facello   | M      | 1987-09-18 |
+|  12751 | 1964-07-06 | Nahum       | Facello   | M      | 1995-01-09 |
+|  15346 | 1959-09-26 | Kirk        | Facello   | F      | 1991-12-07 |
+|  15685 | 1958-07-12 | Kasturi     | Facello   | M      | 1992-03-13 |
+|  18686 | 1962-02-23 | Kwangyoen   | Facello   | F      | 1985-05-02 |
+.......
+| 487188 | 1959-02-20 | Richara     | Facello   | M      | 1985-08-31 |
+| 488569 | 1955-11-15 | Satoru      | Facello   | M      | 1993-03-20 |
+| 493549 | 1960-04-17 | Achilleas   | Facello   | F      | 1991-11-27 |
++--------+------------+-------------+-----------+--------+------------+
+186 rows in set (0.34 sec)
+__________________________________________________
+f)
+mysql> select COUNT(*) as people from employees where birth_date BETWEEN "1950-01-01" and "1959-12-31";
++--------+
+| people |
++--------+
+| 182886 |
++--------+
+__________________________________________________
+g)
+mysql> select gender, COUNT(*) as amount from employees group by gender;
++--------+--------+
+| gender | amount |
++--------+--------+
+| M      | 179973 |
+| F      | 120051 |
++--------+--------+

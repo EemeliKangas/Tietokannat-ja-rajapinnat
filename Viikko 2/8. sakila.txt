@@ -1,0 +1,74 @@
+a)
+mysql> select name from language order by name;
++----------+
+| name     |
++----------+
+| English  |
+| French   |
+| German   |
+| Italian  |
+| Japanese |
+| Mandarin |
++----------+
+__________________________
+b)
+mysql> SELECT a.first_name, a.last_name, f.title
+    -> FROM actor a
+    -> JOIN film_actor fa ON a.actor_id = fa.actor_id
+    -> JOIN film f ON fa.film_id = f.film_id
+    -> WHERE a.last_name = 'TEMPLE';
++------------+-----------+-------------------------+
+| first_name | last_name | title                   |
++------------+-----------+-------------------------+
+| MENA       | TEMPLE    | ACADEMY DINOSAUR        |
+| MENA       | TEMPLE    | ALABAMA DEVIL           |
+| MENA       | TEMPLE    | BALLOON HOMEWARD        |
+| MENA       | TEMPLE    | BEACH HEARTBREAKERS     |
+| MENA       | TEMPLE    | BUTTERFLY CHOCOLAT      |
+................
+__________________________
+c)
+mysql> SELECT a.first_name, a.last_name
+    -> FROM actor a
+    -> JOIN film_actor fa ON a.actor_id = fa.actor_id
+    -> JOIN film f ON fa.film_id = f.film_id
+    -> WHERE f.title = 'GHOST GROUNDHOG';
++------------+-----------+
+| first_name | last_name |
++------------+-----------+
+| DAN        | HARRIS    |
+| KENNETH    | TORN      |
+| KEVIN      | GARLAND   |
+| RUSSELL    | TEMPLE    |
+| RENEE      | BALL      |
++------------+-----------+
+__________________________
+d)
+mysql> SELECT COUNT(*) AS horror_movies
+    -> FROM film f
+    -> JOIN film_category fc ON f.film_id = fc.film_id
+    -> JOIN category c ON fc.category_id = c.category_id
+    -> WHERE c.name = 'Horror';
++---------------+
+| horror_movies |
++---------------+
+|            56 |
++---------------+
+__________________________
+e)
+SELECT f.title
+    -> FROM film f
+    -> JOIN film_category fc ON f.film_id = fc.film_id
+    -> JOIN category c ON fc.category_id = c.category_id
+    -> WHERE c.name = 'Horror';
++-----------------------------+
+| title                       |
++-----------------------------+
+| ACE GOLDFINGER              |
+| AFFAIR PREJUDICE            |
+| AIRPORT POLLOCK             |
+| ALABAMA DEVIL               |
+| ALI FOREVER                 |
+| ANALYZE HOOSIERS            |
+| ANYTHING SAVANNAH           |
+....................................
