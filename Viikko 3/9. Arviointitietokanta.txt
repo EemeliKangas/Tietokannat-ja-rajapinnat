@@ -1,0 +1,94 @@
++--------------+---------+-------------+-----------------+--------------+
+| idOpiskelija | Etunimi | Sukunimi    | Osoite          | Luokkatunnus |
++--------------+---------+-------------+-----------------+--------------+
+|            1 | Hessu   | Hopo        | Hopokuja 5      | TVT23SPO     |
+|            2 | Matti   | Korhonen    | Rajakatu 9      | TVT25SPL     |
+|            3 | Hugh    | Janus       | Bergintie 18    | TVT25SPO     |
+|            4 | Matti   | Meikalainen | Tietolinja 18   | TVT24SPL     |
+|            5 | Paivi   | Rasanen     | Kieltolinja 247 | TVT25SPO     |
+|            6 | Mao     | Zedong      | Vaihtaritie 1   | LIK2025SP    |
+|            7 | Maria   | Virtanen    | Peruskatu 2     | LIK2024SP    |
+|            8 | Matti   | Virtanen    | Peruskatu 5     | TVT23SPL     |
+|            9 | Aku     | Ankka       | Paratiisitie    | TVT25SPO     |
+|           10 | Slim    | Shady       | Riimipolku 8    | TVT25SPL     |
+|           11 | Olli    | Opiskelija  | Koulupolku 12   | TVT25SPL     |
++--------------+---------+-------------+-----------------+--------------+
++---------------+----------+---------+-----------------------------------------------+
+| idOpintojakso | koodi    | laajuus | nimi                                          |
++---------------+----------+---------+-----------------------------------------------+
+|             1 | IN00EH18 |       3 | Matematiikan perusteet tietotekniikassa 1     |
+|             2 | IN00EH20 |       3 | Digitaalitekniikan perusteet tietotekniikassa |
+|             3 | IN00CS84 |       5 | Johdatus ohjelmointiin                        |
+|             4 | YY00DU47 |       3 | Digi- ja tietotekniset taidot                 |
+|             5 | YY00DU46 |       5 | Ammatillinen kehittyminen                     |
+|             6 | IN00CS82 |       5 | Sahkoturvallisuus ja elektroniikan perusteet  |
+|             7 | 6662HDTV |       1 | Lusmuilun alkeiskurssi                        |
++---------------+----------+---------+-----------------------------------------------+
++-------------+------------+----------+--------------+---------------+
+| idArviointi | pvm        | Arvosana | idOpiskelija | idOpintojakso |
++-------------+------------+----------+--------------+---------------+
+|           1 | 2025-12-20 |        3 |            1 |             1 |
+|           2 | 2025-12-20 |        4 |            2 |             1 |
+|           3 | 2025-12-20 |        5 |            3 |             1 |
+|           4 | 2025-12-20 |        2 |            4 |             1 |
+|           5 | 2025-12-20 |        0 |            9 |             1 |
+|           6 | 2025-12-20 |        1 |           10 |             1 |
+|           7 | 2025-12-20 |        3 |           11 |             1 |
+|           8 | 2025-12-20 |        3 |           11 |             2 |
+|           9 | 2025-12-20 |        3 |           11 |             3 |
+|          10 | 2025-12-20 |        3 |           11 |             4 |
+|          11 | 2025-12-20 |        3 |           11 |             5 |
+|          12 | 2025-12-20 |        3 |           11 |             6 |
+|          13 | 2025-12-20 |        5 |           11 |             7 |
+|          14 | 2025-12-20 |        5 |            6 |             7 |
+|          15 | 2025-12-20 |        4 |            1 |             2 |
+|          16 | 2025-12-20 |        4 |            1 |             3 |
+|          17 | 2025-12-20 |        2 |            1 |             4 |
+|          18 | 2025-12-20 |        3 |            1 |             5 |
+|          19 | 2025-12-20 |        5 |            1 |             6 |
+|          20 | 2025-12-20 |        5 |            1 |             7 |
+|          21 | 2025-12-20 |        5 |            2 |             7 |
+|          22 | 2025-12-20 |        5 |            3 |             7 |
+|          23 | 2025-12-20 |        5 |            4 |             7 |
+|          24 | 2025-12-20 |        5 |            5 |             7 |
+|          25 | 2025-12-20 |        5 |            6 |             7 |
+|          26 | 2025-12-20 |        5 |            7 |             7 |
+|          27 | 2025-12-20 |        5 |            8 |             7 |
+|          28 | 2025-12-20 |        5 |            9 |             7 |
+|          29 | 2025-12-20 |        5 |           10 |             7 |
++-------------+------------+----------+--------------+---------------+
+
+mysql> select etunimi,sukunimi,arvosana,pvm,nimi from Arviointi JOIN Opiskelija on Opiskelija.idOpiskelija = Arviointi.idOpiskelija JOIN Opintojakso on Opintojakso.idOpintojakso = Arviointi.idOpintojakso;
++---------+-------------+----------+------------+-----------------------------------------------+
+| etunimi | sukunimi    | arvosana | pvm        | nimi                                          |
++---------+-------------+----------+------------+-----------------------------------------------+
+| Hessu   | Hopo        |        3 | 2025-12-20 | Matematiikan perusteet tietotekniikassa 1     |
+| Matti   | Korhonen    |        4 | 2025-12-20 | Matematiikan perusteet tietotekniikassa 1     |
+| Hugh    | Janus       |        5 | 2025-12-20 | Matematiikan perusteet tietotekniikassa 1     |
+| Matti   | Meikalainen |        2 | 2025-12-20 | Matematiikan perusteet tietotekniikassa 1     |
+| Aku     | Ankka       |        0 | 2025-12-20 | Matematiikan perusteet tietotekniikassa 1     |
+| Slim    | Shady       |        1 | 2025-12-20 | Matematiikan perusteet tietotekniikassa 1     |
+| Olli    | Opiskelija  |        3 | 2025-12-20 | Matematiikan perusteet tietotekniikassa 1     |
+| Olli    | Opiskelija  |        3 | 2025-12-20 | Digitaalitekniikan perusteet tietotekniikassa |
+| Olli    | Opiskelija  |        3 | 2025-12-20 | Johdatus ohjelmointiin                        |
+| Olli    | Opiskelija  |        3 | 2025-12-20 | Digi- ja tietotekniset taidot                 |
+| Olli    | Opiskelija  |        3 | 2025-12-20 | Ammatillinen kehittyminen                     |
+| Olli    | Opiskelija  |        3 | 2025-12-20 | Sahkoturvallisuus ja elektroniikan perusteet  |
+| Olli    | Opiskelija  |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Mao     | Zedong      |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Hessu   | Hopo        |        4 | 2025-12-20 | Digitaalitekniikan perusteet tietotekniikassa |
+| Hessu   | Hopo        |        4 | 2025-12-20 | Johdatus ohjelmointiin                        |
+| Hessu   | Hopo        |        2 | 2025-12-20 | Digi- ja tietotekniset taidot                 |
+| Hessu   | Hopo        |        3 | 2025-12-20 | Ammatillinen kehittyminen                     |
+| Hessu   | Hopo        |        5 | 2025-12-20 | Sahkoturvallisuus ja elektroniikan perusteet  |
+| Hessu   | Hopo        |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Matti   | Korhonen    |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Hugh    | Janus       |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Matti   | Meikalainen |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Paivi   | Rasanen     |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Mao     | Zedong      |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Maria   | Virtanen    |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Matti   | Virtanen    |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Aku     | Ankka       |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
+| Slim    | Shady       |        5 | 2025-12-20 | Lusmuilun alkeiskurssi                        |
++---------+-------------+----------+------------+-----------------------------------------------+

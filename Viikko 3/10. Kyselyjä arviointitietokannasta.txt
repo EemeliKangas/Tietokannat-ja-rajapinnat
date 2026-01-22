@@ -1,0 +1,51 @@
+(Taulukoiden teko oli kuulemma melko vapaavalintaista)
+1) Tulostetaan kaikki opiskelijat, joilla on tietokannassa hylätty arvosana.
+
+mysql> select distinct o.Etunimi, o.Sukunimi, o.Luokkatunnus from Arviointi a join opiskelija o ON a.idOpiskelija = o.idOpiskelija WHERE a.arvosana = 0;
++---------+----------+--------------+
+| Etunimi | Sukunimi | Luokkatunnus |
++---------+----------+--------------+
+| Aku     | Ankka    | TVT25SPO     |
++---------+----------+--------------+
+
+2) Tulostetaan kaikki Matikka 1 hyväksytysti suorittaneet:
+
+select distinct o.Etunimi, o.Sukunimi, o.Luokkatunnus from Arviointi a join opiskelija o ON a.idOpiskelija = o.idOpiskelija WHERE a.arvosana != 0 and a.idopintojakso='1';
++---------+-------------+--------------+
+| Etunimi | Sukunimi    | Luokkatunnus |
++---------+-------------+--------------+
+| Hessu   | Hopo        | TVT23SPO     |
+| Matti   | Korhonen    | TVT25SPL     |
+| Hugh    | Janus       | TVT25SPO     |
+| Matti   | Meikalainen | TVT24SPL     |
+| Slim    | Shady       | TVT25SPL     |
+| Olli    | Opiskelija  | TVT25SPL     |
++---------+-------------+--------------+
+3) 
+select distinct oj.koodi, oj.nimi FROM arviointi a JOIN opiskelija o ON a.idOpiskelija = o.idopiskelija
+    -> join opintojakso oj ON a.idopintojakso = oj.idopintojakso WHERE o.etunimi = 'Hessu' and o.sukunimi ='Hopo';
++----------+-----------------------------------------------+
+| koodi    | nimi                                          |
++----------+-----------------------------------------------+
+| IN00EH18 | Matematiikan perusteet tietotekniikassa 1     |
+| IN00EH20 | Digitaalitekniikan perusteet tietotekniikassa |
+| IN00CS84 | Johdatus ohjelmointiin                        |
+| YY00DU47 | Digi- ja tietotekniset taidot                 |
+| YY00DU46 | Ammatillinen kehittyminen                     |
+| IN00CS82 | Sahkoturvallisuus ja elektroniikan perusteet  |
+| 6662HDTV | Lusmuilun alkeiskurssi                        |
++----------+-----------------------------------------------+
+4)
+mysql> select o.etunimi, o.sukunimi, AVG(a.arvosana) AS keskiarvo from arviointi a join opiskelija o on a.idopiskelija = o.idopiskelija where o.etunimi ='Aku' and o.sukunimi = 'Ankka';
++---------+----------+-----------+
+| etunimi | sukunimi | keskiarvo |
++---------+----------+-----------+
+| Aku     | Ankka    |    2.5000 |
++---------+----------+-----------+
+
+5)
+mysql> select oj.idopintojakso, oj.koodi, oj.nimi from opintojakso oj
+    -> left join arviointi a on oj.idopintojakso = a.idopintojakso where a.idopintojakso is NULL;
+Empty set (0.00 sec)
+
+Minulla ei ole ainuttakaan opintojaksoa jolla ei olisi suoritusta.
