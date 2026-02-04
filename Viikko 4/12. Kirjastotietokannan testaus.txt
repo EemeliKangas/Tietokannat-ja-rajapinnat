@@ -1,72 +1,57 @@
 Latasin valmiiksi tekemäni tietokannan MySQL workbenchistä ja lisäilin sinne asiakkaita:
-
-mysql> insert into asiakas values(NULL,'Pekka Topohanta','Kissakatu','0');
-mysql> insert into asiakas values(NULL,'Kalevi Korhonen','Jokutie','9.85');
-mysql> insert into asiakas values(NULL,'Aku Ankka','Paratiisitie','10.82');
+mysql> insert into asiakas values(NULL,'Jukka Petteri');
+mysql> insert into asiakas values(NULL,'Pasi Viheraho');
+mysql> insert into asiakas values(NULL,'Aku Ankka');
 mysql> select * from asiakas;
-+-----------+-----------------+--------------+-------+
-| idAsiakas | nimi            | osoite       | sakko |
-+-----------+-----------------+--------------+-------+
-|         1 | Pekka Topohanta | Kissakatu    |  0.00 |
-|         2 | Kalevi Korhonen | Jokutie      |  9.85 |
-|         3 | Aku Ankka       | Paratiisitie | 10.82 |
-+-----------+-----------------+--------------+-------+
++-----------+---------------+
+| idAsiakas | nimi          |
++-----------+---------------+
+|         1 | Jukka Petteri |
+|         2 | Pasi Viheraho |
+|         3 | Aku Ankka     |
++-----------+---------------+
 
 sitten teoksia:
-mysql> insert into teos values(NULL,'Art Of War','Beijing Press','0010-12-5');
-mysql> insert into teos values(NULL,'IT','American Publisher','1990-12-5');
-mysql> insert into teos values(NULL,'Rakastelun perusteet','Gummerus','2015-12-5');
-+--------+----------------------+--------------------+------------+
-| idTeos | nimi                 | kustantaja         | julkaisupv |
-+--------+----------------------+--------------------+------------+
-|      1 | Art Of War           | Beijing Press      | 0010-12-05 |
-|      2 | IT                   | American Publisher | 1990-12-05 |
-|      3 | Rakastelun perusteet | Gummerus           | 2015-12-05 |
-+--------+----------------------+--------------------+------------+
+mysql> insert into Teos values(NULL,'Art of War','1213-0000-1231');
+mysql> insert into Teos values(NULL,'Parhaat Poiminnat Sodan Taiteesta','4242-0000-1231');
+mysql> insert into Teos values(NULL,'Sinuhe Egyptilainen','4242-1111-1231');
 
+mysql> select * from teos;
++--------+-----------------------------------+----------------+
+| idTeos | nimi                              | koodi          |
++--------+-----------------------------------+----------------+
+|      1 | Art of War                        | 1213-0000-1231 |
+|      2 | Parhaat Poiminnat Sodan Taiteesta | 4242-0000-1231 |
+|      3 | Sinuhe Egyptilainen               | 4242-1111-1231 |
++--------+-----------------------------------+----------------+
 kirjailijat:
-mysql> insert into tekija values(NULL,'Stephen King');
-mysql> insert into tekija values(NULL,'Jamppa Kaariainen');
-mysql> insert into tekija values(NULL,'Sun Tzu');
-+----------+-------------------+
-| idTekija | name              |
-+----------+-------------------+
-|        1 | Stephen King      |
-|        2 | Jamppa Kaariainen |
-|        3 | Sun Tzu           |
-+----------+-------------------+
+mysql> insert into tekija values(NULL,'Sun','Tzu');
+mysql> insert into tekija values(NULL,'Geneerinen','Toimittaja');
+mysql> insert into tekija values(NULL,'Mika','Waltari');
 
-mysql> insert into painos values(NULL,'1','1');
-……………..
-mysql> select * from painos;
-+---------+-------------+--------------+
-| idkirja | Teos_idTeos | Teos_idTeos1 |
-+---------+-------------+--------------+
-|       1 |           1 |            1 |
-|       2 |           1 |            1 |
-|       3 |           1 |            1 |
-|       4 |           2 |            2 |
-|       5 |           2 |            2 |
-|       6 |           3 |            3 |
-|       7 |           3 |            3 |
-+---------+-------------+--------------+
-Teos_idTeos on siis teos ja on kirjailija Teos_idTeos (en huomannut korjata)
++----------+------------+------------+
+| idTekija | etunimi    | sukunimi   |
++----------+------------+------------+
+|        1 | Sun        | Tzu        |
+|        2 | Geneerinen | Toimittaja |
+|        3 | Mika       | Waltari    |
++----------+------------+------------+
 
-Yhdistelytaulu jossa on teoksella 3 on useita tekijöitä:
-mysql> select * from teos_has_tekija;
-+-------------+-----------------+
-| Teos_idTeos | Tekija_idTekija |
-+-------------+-----------------+
-|           2 |               1 |
-|           3 |               1 |
-|           3 |               2 |
-|           1 |               3 |
-+-------------+-----------------+
+Yhdistelytaulu jossa on teoksella 2 on useita tekijöitä:
+mysql> select * from tekija_teos;
++--------+----------+
+| idteos | idtekija |
++--------+----------+
+|      1 |        1 |
+|      2 |        1 |
+|      2 |        2 |
+|      3 |        3 |
++--------+----------+
 
-mysql> insert into lainaus values(NULL,'1','1','1','2025-01-01','2025-01-31');
+mysql> mysql> insert into lainaus values(NULL,'1','1','3','0','2026-01-02','2026-02-02');
 mysql> select * from lainaus;
-+-----------+---------------+-------------------+-------------------+------------+------------+
-| idlainaus | kirja_idkirja | kirja_Teos_idTeos | Asiakas_idAsiakas | lainapv    | palautuspv |
-+-----------+---------------+-------------------+-------------------+------------+------------+
-|         2 |             1 |                 1 |                 1 | 2025-01-01 | 2025-01-31 |
-+-----------+---------------+-------------------+-------------------+------------+------------+
++-----------+---------+--------+-----------+----------+------------+------------+
+| idlainaus | idkirja | idteos | idAsiakas | palautus | lainauspv  | palautuspv |
++-----------+---------+--------+-----------+----------+------------+------------+
+|         1 |       1 |      1 |         3 |        0 | 2026-01-02 | 2026-02-02 |
++-----------+---------+--------+-----------+----------+------------+------------+

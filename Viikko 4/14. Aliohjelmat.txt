@@ -1,0 +1,56 @@
+c)
+CREATE PROCEDURE `myohassa`()
+Aliohjelma: BEGIN
+
+    SELECT 
+        a.nimi AS Asiakas,
+        t.nimi AS Teos,
+        l.idkirja AS KirjaID,
+        l.lainauspv AS LainausPvm,
+        l.palautuspv AS PalautusPvm
+    FROM lainaus l
+    JOIN Asiakas a ON l.idAsiakas = a.idAsiakas
+    JOIN painos p ON l.idkirja = p.idkirja
+    JOIN Teos t ON p.teosid = t.idTeos
+    WHERE l.palautus = 0
+      AND l.palautuspv < CURDATE()
+    ORDER BY l.palautuspv ASC;
+
+END
+mysql> CALL myohassa;
++-----------+------------+---------+------------+-------------+
+| Asiakas   | Teos       | KirjaID | LainausPvm | PalautusPvm |
++-----------+------------+---------+------------+-------------+
+| Aku Ankka | Art of War |       1 | 2026-01-02 | 2026-02-02  |
++-----------+------------+---------+------------+-------------+
+d)
+CREATE PROCEDURE LisaaOpintosuoritus (
+    IN pEtunimi VARCHAR(50),
+    IN pSukunimi VARCHAR(50),
+    IN pKurssiKoodi VARCHAR(20),
+    IN pArvosana INT
+)
+BEGIN
+    DECLARE vOpiskelijaID INT DEFAULT 0;
+    DECLARE vOpintojaksoID INT DEFAULT 0;
+
+    IF pArvosana BETWEEN 0 AND 5 THEN
+        SELECT idOpiskelija INTO vOpiskelijaID
+        FROM Opiskelija
+        WHERE Etunimi = pEtunimi AND Sukunimi = pSukunimi
+        LIMIT 1;
+        
+        SELECT idOpintojakso INTO vOpintojaksoID
+        FROM Opintojakso
+        WHERE Koodi = pKurssiKoodi
+        LIMIT 1;
+
+        IF vOpiskelijaID IS NOT NULL AND vOpintojaksoID IS NOT NULL THEN
+            INSERT INTO Arviointi (Pvm, Arvosana, idOpiskelija, idOpintojakso)
+            VALUES (CURDATE(), pArvosana, vOpiskelijaID, vOpintojaksoID);
+        END IF;
+
+    END IF;
+
+END
+e)
