@@ -1,0 +1,122 @@
+a)
+CREATE PROCEDURE `kursori`(IN suunta CHAR(1))
+BEGIN
+/*Paikalliset muuttujat*/
+DECLARE arvos INT;
+DECLARE ID INT;
+/*Tosi, kun kursori menee taulun loppuun*/
+DECLARE done BOOLEAN;
+/*Haetaan kursoriin kaikki tiedot kahdesta sarakkeesta*/
+DECLARE arvos_cursor CURSOR for
+SELECT idArviointi,Arvosana FROM Arviointi;
+/* NOT FOUND-käsittelijä (kun rivit loppuu) */
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=TRUE;
+/*Avataan kursori*/
+OPEN arvos_cursor;
+/*Aloitetaan silmukka*/
+arvos_loop: loop
+/*Sijoitetaan kursorin arvot rivi kerrallaan muuttujiin*/
+FETCH arvos_cursor INTO ID,arvos;
+/*Kun kaikki luettu, silmukasta ulos*/
+IF done then
+CLOSE arvos_cursor;
+LEAVE arvos_loop;
+END IF;
+/*Päivitetään Arvosana-sarakkeen yksi rivi*/
+IF suunta = '+' THEN
+UPDATE Arviointi SET Arvosana=arvos+1 WHERE ID=idArviointi AND
+Arvosana < 5;
+ELSEIF suunta = '-' then
+UPDATE Arviointi SET Arvosana = Arvosana - 1
+WHERE ID = idArviointi AND Arvosana > 0;
+END IF;
+END LOOP arvos_loop;
+END;
+
+mysql> select * from arviointi
+    -> ;
++-------------+------------+----------+--------------+---------------+
+| idArviointi | Pvm        | Arvosana | idOpiskelija | idOpintojakso |
++-------------+------------+----------+--------------+---------------+
+|          30 | 2026-02-04 |        4 |            2 |             3 |
++-------------+------------+----------+--------------+---------------+
+mysql> call kursori('+');
+mysql> select * from arviointi;
++-------------+------------+----------+--------------+---------------+
+| idArviointi | Pvm        | Arvosana | idOpiskelija | idOpintojakso |
++-------------+------------+----------+--------------+---------------+
+|          30 | 2026-02-04 |        5 |            2 |             3 |
++-------------+------------+----------+--------------+---------------+
+mysql> call kursori('-');
+Query OK, 0 rows affected (0.12 sec)
+mysql> call kursori('-');
+Query OK, 0 rows affected (0.39 sec)
++-------------+------------+----------+--------------+---------------+
+| idArviointi | Pvm        | Arvosana | idOpiskelija | idOpintojakso |
++-------------+------------+----------+--------------+---------------+
+|          30 | 2026-02-04 |        3 |            2 |             3 |
++-------------+------------+----------+--------------+---------------+
+b)
+
+CREATE PROCEDURE `muutaryhma` (IN utunnus VARCHAR(10), IN vtunnus VARCHAR(10))
+BEGIN
+/*Paikallismuuttujat:*/
+DECLARE ltunnus VARCHAR(10);
+DECLARE ID INT;
+DECLARE done BOOLEAN DEFAULT FALSE;
+
+DECLARE muutaryhma_cursor CURSOR FOR SELECT idOpiskelija, Luokkatunnus FROM Opiskelija;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+OPEN muutaryhma_cursor;
+muutaryhma_cursor: LOOP
+FETCH muutaryhma_cursor INTO ID, ltunnus;
+IF done THEN CLOSE muutaryhma_cursor;
+LEAVE muutaryhma_cursor;
+END IF;
+
+IF ltunnus = vtunnus THEN
+UPDATE Opiskelija SET Luokkatunnus = utunnus WHERE idOpiskelija = ID;
+END IF;
+
+END LOOP muutaryhma_cursor;
+IF done = FALSE THEN
+SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT = 'vanhaa luokkatunnusta ei loydetty';
+END IF;
+
+END
+
+mysql> select * from Opiskelija;
++--------------+---------+-------------+-----------------+--------------+
+| idOpiskelija | Etunimi | Sukunimi    | Osoite          | Luokkatunnus |
++--------------+---------+-------------+-----------------+--------------+
+|            1 | Hessu   | Hopo        | Hopokuja 5      | TVT23SPO     |
+|            2 | Matti   | Korhonen    | Rajakatu 9      | TVT25SPL     |
+|            3 | Hugh    | Janus       | Bergintie 18    | TVT25SPO     |
+|            4 | Matti   | Meikalainen | Tietolinja 18   | TVT24SPL     |
+|            5 | Paivi   | Rasanen     | Kieltolinja 247 | TVT25SPO     |
+|            6 | Mao     | Zedong      | Vaihtaritie 1   | LIK2025SP    |
+|            7 | Maria   | Virtanen    | Peruskatu 2     | LIK2024SP    |
+|            8 | Matti   | Virtanen    | Peruskatu 5     | TVT23SPL     |
+|            9 | Aku     | Ankka       | Paratiisitie    | TVT25SPO     |
+|           10 | Slim    | Shady       | Riimipolku 8    | TVT25SPL     |
+|           11 | Olli    | Opiskelija  | Koulupolku 12   | TVT25SPL     |
++--------------+---------+-------------+-----------------+--------------+
+mysql> CALL muutaryhma('TVT25SP','TVT25SPL');
+mysql> select * from Opiskelija;
++--------------+---------+-------------+-----------------+--------------+
+| idOpiskelija | Etunimi | Sukunimi    | Osoite          | Luokkatunnus |
++--------------+---------+-------------+-----------------+--------------+
+|            1 | Hessu   | Hopo        | Hopokuja 5      | TVT23SPO     |
+|            2 | Matti   | Korhonen    | Rajakatu 9      | TVT25SP      |
+|            3 | Hugh    | Janus       | Bergintie 18    | TVT25SPO     |
+|            4 | Matti   | Meikalainen | Tietolinja 18   | TVT24SPL     |
+|            5 | Paivi   | Rasanen     | Kieltolinja 247 | TVT25SPO     |
+|            6 | Mao     | Zedong      | Vaihtaritie 1   | LIK2025SP    |
+|            7 | Maria   | Virtanen    | Peruskatu 2     | LIK2024SP    |
+|            8 | Matti   | Virtanen    | Peruskatu 5     | TVT23SPL     |
+|            9 | Aku     | Ankka       | Paratiisitie    | TVT25SPO     |
+|           10 | Slim    | Shady       | Riimipolku 8    | TVT25SP      |
+|           11 | Olli    | Opiskelija  | Koulupolku 12   | TVT25SP      |
++--------------+---------+-------------+-----------------+--------------+

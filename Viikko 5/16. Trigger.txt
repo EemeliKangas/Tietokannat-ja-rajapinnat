@@ -1,0 +1,47 @@
+a)
+
+CREATE DEFINER = CURRENT_USER TRIGGER `arviointi`.`Opiskelija_AFTER_INSERT` AFTER INSERT ON `Opiskelija` FOR EACH ROW
+BEGIN
+INSERT INTO Muutokset VALUES( NULL,NOW(),'Opiskelija lisatty');
+END
+mysql> select * from muutokset;
++-------------+---------------------+--------------------------+
+| idMuutokset | pvm                 | toiminto                 |
++-------------+---------------------+--------------------------+
+|           1 | 2026-02-10 22:11:01 | Opiskelija lisatty       |
++-------------+---------------------+--------------------------+
+________________________________________
+b)
+Opiskelijataululle:
+CREATE DEFINER = CURRENT_USER TRIGGER Opiskelija_BEFORE_DELETE BEFORE DELETE ON `Opiskelija` FOR EACH ROW
+BEGIN
+DECLARE str VARCHAR(145);
+     SET str=CONCAT(OLD.idOpiskelija,' ',OLD.Etunimi,' ',OLD.Sukunimi,' ',OLD.Osoite,'',OLD.Luokkatunnus);
+     INSERT INTO Roskakori VALUES(NULL,'Opiskelija',NOW(),str);
+END
+____________________________
+Arviointi:
+CREATE DEFINER = CURRENT_USER TRIGGER Arviointi_BEFORE_DELETE BEFORE DELETE ON `Arviointi` FOR EACH ROW
+BEGIN
+DECLARE str VARCHAR(145);
+     SET str=CONCAT(OLD.idArviointi,' ',OLD.Pvm,' ',OLD.Arvosana,' ',OLD.idOpiskelija,' ',OLD.idOpintojakso);
+     INSERT INTO Roskakori VALUES(NULL,'Arviointi',NOW(),str);
+END
+____________________________
+Opintojakso:
+CREATE DEFINER = CURRENT_USER TRIGGER Opintojakso_BEFORE_DELETE BEFORE DELETE ON `Opintojakso` FOR EACH ROW
+BEGIN
+DECLARE str VARCHAR(145);
+     SET str=CONCAT(OLD.idOpintojakso,' ',OLD.Koodi,' ',OLD.Laajuus,' ',OLD.Nimi);
+     INSERT INTO Roskakori VALUES(NULL,'Opintojakso',NOW(),str);
+END
+_____________________________
+Muutaman poiston jälkeen:
+mysql> select * from roskakori;
++-------------+-------------+---------------------+----------------------------------------+
+| idRoskakori | taulu       | pvm                 | teksti                                 |
++-------------+-------------+---------------------+----------------------------------------+
+|           1 | Opiskelija  | 2026-02-10 23:12:54 | 12 Jukka Pekka Hiisitie 28TVTSPL25     |
+|           2 | Arviointi   | 2026-02-10 23:14:27 | 36 2026-02-10 2 9 7                    |
+|           3 | Opintojakso | 2026-02-10 23:15:11 | 5 YY00DU46 5 Ammatillinen kehittyminen |
++-------------+-------------+---------------------+----------------------------------------+
