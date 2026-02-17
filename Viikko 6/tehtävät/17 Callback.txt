@@ -1,0 +1,30 @@
+1)
+setTimeout(doSomething,2000);
+
+function doSomething(){
+    console.log("Demonstrating the callbacks");
+}
+console.log("The application is started");
+
+MINGW64 ~/Documents/Tietokannat-ja-rajapinnat/Viikko 6 (main)
+$ node callback_example.js
+The application is started
+Demonstrating the callbacks
+
+2) anonyymi funktio:
+setTimeout(function(){
+    console.log("Anonyymi Callback");
+}, 2000);
+
+ MINGW64 ~/Documents/Tietokannat-ja-rajapinnat/Viikko 6 (main)
+$ node callback_example.js
+Anonyymi Callback
+
+3)
+setTimeout(()=>{
+    console.log("Nuolifunktio Callback");
+}, 2000);
+
+ MINGW64 ~/Documents/Tietokannat-ja-rajapinnat/Viikko 6 (main)
+$ node callback_example.js
+Nuolifunktio Callback
